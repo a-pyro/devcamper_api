@@ -1,12 +1,16 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import bootCampsRoutes from './routes/bootcamp.js';
-import listEndpoints from 'express-list-endpoints';
+// import listEndpoints from 'express-list-endpoints';
 // import { logger } from './middlewares/logger.js';
 import morgan from 'morgan';
+import connectDB from './config/db.js';
 
 // carica env vars nel process
 dotenv.config({ path: './config/config.env' });
+
+//connetto DB
+connectDB();
 
 const app = express();
 const PORT = process.env.PORT || 5000;

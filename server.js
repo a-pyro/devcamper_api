@@ -4,7 +4,7 @@ import bootCampsRoutes from './routes/bootcamp.js';
 // import listEndpoints from 'express-list-endpoints';
 // import { logger } from './middlewares/logger.js';
 import morgan from 'morgan';
-import connectDB from './db/db.js';
+import connectDB from './config/db.js';
 import colors from 'colors';
 
 // carica env vars nel process

@@ -1,8 +1,15 @@
+import Bootcamp from '../models/Bootcamps.js';
+
 // @desc    Get all bootcamp
 // @route   GET /api/v1/bootcamps
 // @access  Public
-export const getBootcamps = (req, res, next) => {
-  res.send('hello');
+export const getBootcamps = async (req, res, next) => {
+  try {
+    const bootcamps = await Bootcamp.find();
+    res.status(200).json({ succes: true, data: bootcamps });
+  } catch (error) {
+    res.status(400).json({ success: false });
+  }
 };
 
 // @desc    Get single bootcamp
@@ -13,7 +20,18 @@ export const getBootcamp = (req, res, next) => {};
 // @desc    create new bootcamp
 // @route   POST /api/v1/bootcamps
 // @access  Private
-export const createBootcamp = (req, res, next) => {};
+export const createBootcamp = async (req, res, next) => {
+  try {
+    const bootcamp = await Bootcamp.create(req.body);
+    res
+      .status(201)
+      .json({ success: true, message: 'bootcamp created', _id: bootcamp._id });
+  } catch (error) {
+    res.status(400).json({
+      succes: false,
+    });
+  }
+};
 
 // @desc    Update bootcamp
 // @route   PUT /api/v1/bootcamps:id

@@ -3,7 +3,7 @@ import ErrorResponse from '../utils/errorResponse.js';
 export const errorHandler = (err, req, res, next) => {
   //loggo console for dev
   // console.log(err.stack.red); // => stack dell'errore e messaggio
-  console.log(err);
+  console.log(err.name);
 
   let error = { ...err };
   error.message = err.message;
@@ -19,6 +19,13 @@ export const errorHandler = (err, req, res, next) => {
       Object.keys(err.keyValue)[0]
     }: ${Object.values(err.keyValue)[0]}`;
     error = new ErrorResponse(message, 400);
+  }
+
+  //Mongoose validation error => bad request
+  if (err.name === 'ValidationError') {
+    const message = Object.values(err.errors).map((val) => val.message);
+    error = new ErrorResponse(message, 400);
+    console.log(error);
   }
 
   res.status(error.statusCode || 500).json({

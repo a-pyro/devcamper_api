@@ -2,7 +2,8 @@ import ErrorResponse from '../utils/errorResponse.js';
 
 export const errorHandler = (err, req, res, next) => {
   //loggo console for dev
-  console.log(err.stack.red);
+  // console.log(err.stack.red); // => stack dell'errore e messaggio
+  console.log(err);
 
   let error = { ...err };
   error.message = err.message;
@@ -10,6 +11,14 @@ export const errorHandler = (err, req, res, next) => {
   if (err.name === 'CastError') {
     const message = `resource not found with id of ${err.value}`;
     error = new ErrorResponse(message, 404);
+  }
+
+  // Mongoose duplicate keys => mi posta una field unique
+  if (err.code === 11000) {
+    const message = `Duplicate field value entered: ${
+      Object.keys(err.keyValue)[0]
+    }: ${Object.values(err.keyValue)[0]}`;
+    error = new ErrorResponse(message, 400);
   }
 
   res.status(error.statusCode || 500).json({

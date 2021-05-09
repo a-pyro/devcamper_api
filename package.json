@@ -5,9 +5,8 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "with strive dotenv": "nodemon -e js -r dotenv/config server",
-    "start": "NODE_ENV=production node server",
-    "dev": "nodemon server"
+    "dev": "nodemon -e js -r dotenv/config server.js",
+    "start": "NODE_ENV=production node server"
   },
   "keywords": [],
   "author": "",

@@ -122,7 +122,8 @@ BootcampSchema.pre('save', async function (next) {
     country: loc[0].countryCode,
   };
 
-  // do not save address in db => ho salvato la location
+  // do not save address in db => ho salvato la location quindi non mi serve
+  // mi serviva inizialmente per creare questa location ma siccome sono in un middleware ora setto undefined e non lo salva (son nell'hook pre)
   this.address = undefined; // non me lo salva in db :)
 
   next();

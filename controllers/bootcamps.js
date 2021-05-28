@@ -7,7 +7,41 @@ import geocoder from '../utils/geocoder.js';
 // @route   GET /api/v1/bootcamps
 // @access  Public
 export const getBootcamps = asyncHandler(async (req, res, next) => {
-  const bootcamps = await Bootcamp.find();
+  //query params
+  // const bootcamps = await Bootcamp.find(req.query);
+  // {{URL}}api/v1/bootcamps?averageCost[lte]=10000
+  console.log(req.query);
+  let query;
+
+  const reqQuery = { ...req.query };
+
+  const removeFields = ['select'];
+
+  removeFields.forEach((param) => delete reqQuery[param]);
+
+  if (req.query.select) {
+    const fields = req.query.select.replace(',', ' ');
+    console.log(fields);
+    query = query.select(fields);
+  }
+
+  console.log(reqQuery);
+
+  let queryStr = JSON.stringify(reqQuery);
+
+  console.log(queryStr);
+
+  queryStr = queryStr.replace(
+    /\b(gt|gte|lt|lte|in|ne)\b/g,
+    (match) => `$${match}`
+  );
+
+  console.log(queryStr);
+
+  query = Bootcamp.find(JSON.parse(queryStr));
+
+  const bootcamps = await query;
+
   res
     .status(200)
     .json({ succes: true, count: bootcamps.length, data: bootcamps });
